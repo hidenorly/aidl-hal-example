@@ -14,10 +14,11 @@
    limitations under the License.
 */
 
-package com.example;
+package com.example.hardware.example;
 
-import com.example.IExampleCallback;
+import com.example.hardware.example.IExampleCallback;
 
+@VintfStability
 interface IExampleService {
     void registerCallback(IExampleCallback callback);
     void unregisterCallback(IExampleCallback callback);
