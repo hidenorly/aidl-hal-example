@@ -1,10 +1,23 @@
-// ExampleService.cpp
+/*
+  Copyright (C) 2024 hidenorly
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 
 #include <android-base/logging.h>
-#include <binder/IServiceManager.h>
-#include <binder/IPCThreadState.h>
-#include <binder/ProcessState.h>
-#include "IExampleService.h"
+#include <android/binder_manager.h>
+#include <android/binder_process.h>
+#include "ExampleService.h"
 
 using android::OK;
 using android::sp;
@@ -16,7 +29,11 @@ using android::IPCThreadState;
 using android::ProcessState;
 using android::BnDeathRecipient;
 
-
+namespace aidl {
+namespace vendor {
+namespace hidenorly {
+namespace hardware {
+namespace example {
 
 void ExampleService::registerCallback(const android::sp<IExampleCallback>& callback) {
     android::Mutex::Autolock lock(mCallbackLock);
@@ -37,7 +54,6 @@ void ExampleService::unregisterCallback(const android::sp<IExampleCallback>& cal
         });
 
     if (callbackIt != mCallbacks.end()) {
-        // デッド状態のCallbackを解除
         android::IInterface::asBinder(callback)->unlinkToDeath(new android::BnDeathRecipient(callback, callbackIt->cookie)).clear();
         mCallbacks.erase(callbackIt);
     }
@@ -57,25 +73,28 @@ void ExampleService::notifyToClients() {
     }
 }
 
-void ExampleService::instantiate() {
-    android::defaultServiceManager()->addService(android::String16("example.service"), new ExampleService());
-}
+} // example
+} // hardware
+} // hidenorly
+} // vendor
+} // aidl
 
+using aidl::vendor::hidenoly::hardware::example::ExampleService;
 
 int main() {
-    // ExampleService インスタンスを作成
+    // Instantiate ExampleService
     sp<ExampleService> exampleService = new ExampleService();
 
-    // Service Manager にサービスを登録
+    // Register to Service Manager
     status_t status = android::defaultServiceManager()->addService(
-        String16("vendor.example.hardware.example_aidl_service"), exampleService);
+        String16("vendor.hidenorly.hardware.example/default"), exampleService);
 
     if (status != OK) {
         LOG(ERROR) << "Failed to register service: " << status;
         return 1;
     }
 
-    // IPC スレッドを開始
+    // Start IPC thread
     ProcessState::self()->startThreadPool();
 
     // Main loop

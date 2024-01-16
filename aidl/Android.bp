@@ -19,29 +19,26 @@ package {
 }
 
 aidl_interface {
-    name: "com.example.hardware.example",
-    vendor_available: true,
-    srcs: ["com/example/hardware/example/*.aidl"],
+    name: "vendor.hidenorly.hardware.example",
+    vendor: true,
+    srcs: ["vendor/hidenorly/hardware/example/*.aidl"],
     stability: "vintf",
-    owner: "hidenorly",
-    imports: [
-        //"android.hardware.common-V2",
-        //"com.example.hardware.example",
-    ],
     backend: {
-        cpp: {
-            enabled: true,
-        },
         java: {
-            enabled: false,
+            enabled: true,
+            platform_apis: true,
             sdk_version: "module_current",
         },
         ndk: {
             vndk: {
-                enabled: false,
+                enabled: true,
             },
         },
+        cpp: {
+            enabled: false,
+        },
     },
+    owner: "hidenorly",
     versions: [
         "1",
     ],

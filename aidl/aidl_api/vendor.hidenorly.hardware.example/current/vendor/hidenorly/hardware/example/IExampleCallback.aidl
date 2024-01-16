@@ -31,9 +31,8 @@
 // with such a backward incompatible change, it has a high risk of breaking
 // later when a module using the interface is updated, e.g., Mainline modules.
 
-package com.example.hardware.example;
+package vendor.hidenorly.hardware.example;
 @VintfStability
-interface IExampleService {
-  void registerCallback(com.example.hardware.example.IExampleCallback callback);
-  void unregisterCallback(com.example.hardware.example.IExampleCallback callback);
+interface IExampleCallback {
+  oneway void onCallback();
 }

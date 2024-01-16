@@ -18,30 +18,22 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-cc_defaults {
-    name: "example_aidl_hal_defaults",
-    vendor: true,
-    recovery_available: true,
+cc_binary {
+    name: "vendor.hidenorly.hardware.example-service",
     relative_install_path: "hw",
-    export_include_dirs: ["include"],
+    init_rc: ["vendor.hidenorly.hardware.example-service.rc"],
+    vintf_fragments: ["vendor.hidenorly.hardware.example-service.xml"],
+    vendor: true,
+    shared_libs: [
+        "libbase",
+        "liblog",
+        "libutils",
+        "libbinder_ndk",
+        "libcutils",
+        "vendor.hidenorly.hardware.example-V2-ndk_platform",
+    ],
     srcs: [
         "ExampleService.cpp",
     ],
-    shared_libs: [
-        "libbase",
-        "libcutils",
-        "liblog",
-        "libutils",
-        //"com.example.hardware.example-V1-ndk_platform",
-        //"libbinder_ndk",
-    ],
-}
-
-cc_binary {
-    name: "vendor.example.hardware.example-service",
-    vendor: true,
-    defaults: ["example_aidl_hal_defaults"],
-    init_rc: ["vendor.example.hardware.example-service.rc"],
-    vintf_fragments: ["vendor.example.hardware.example-service.xml"],
 }
 

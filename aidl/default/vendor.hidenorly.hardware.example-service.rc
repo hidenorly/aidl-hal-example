@@ -1,0 +1,4 @@
+service example_aidl_service /vendor/bin/hw/vendor.hidenorly.hardware.example-service
+    class hal
+    user system
+    group system

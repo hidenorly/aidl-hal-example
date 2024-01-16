@@ -14,9 +14,12 @@
    limitations under the License.
 */
 
-package com.example.hardware.example;
+package vendor.hidenorly.hardware.example;
+
+import vendor.hidenorly.hardware.example.IExampleCallback;
 
 @VintfStability
-interface IExampleCallback {
-    oneway void onCallback();
+interface IExampleService {
+    void registerCallback(IExampleCallback callback);
+    void unregisterCallback(IExampleCallback callback);
 }

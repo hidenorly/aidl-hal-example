@@ -1,4 +1,0 @@
-service vendor.example.hardware.example_aidl_service /vendor/bin/example_aidl_service
-    class hal
-    user system
-    group system
